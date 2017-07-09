@@ -2,6 +2,7 @@ import pygame
 import sys
 import traceback
 import myplane
+import enemy
 from pygame.locals import*
 from random import *
 
@@ -43,6 +44,24 @@ enemy3_down_sound.set_volume(0.5)
 me_down_sound = pygame.mixer.Sound("./sound/me_down.wav")
 me_down_sound.set_volume(0.2)
 
+def add_small_enemies(group1,group2,num):
+    for i in range(num):
+        e1 = enemy.SmallEnemy(bg_size)
+        group1.add(e1)
+        group2.add(e1)
+
+def add_mid_enemies(group1,group2,num):
+    for i in range(num):
+        e2 = enemy.MidEnemy(bg_size)
+        group1.add(e2)
+        group2.add(e2)
+
+def add_big_enemies(group1,group2,num):
+    for i in range(num):
+        e3 = enemy.BigEnemy(bg_size)
+        group1.add(e3)
+        group2.add(e3)
+
 
 def main():
     pygame.mixer.music.play(-1)
@@ -50,8 +69,27 @@ def main():
     #生成我方飞机
     me = myplane.myPlane(bg_size)
 
-    clock = pygame.time.Clock()
+    #生成敌方飞机
+    enemies = pygame.sprite.Group()
     
+    small_enemies = pygame.sprite.Group()
+    add_small_enemies(small_enemies,enemies,15)
+
+    mid_enemies = pygame.sprite.Group()
+    add_mid_enemies(mid_enemies,enemies,4)
+
+    big_enemies = pygame.sprite.Group()
+    add_big_enemies(big_enemies,enemies,2)
+
+
+
+    clock = pygame.time.Clock()
+
+    #用于切换图片
+    switch_image = True
+
+    #用于延迟
+    delay = 100
 
     running = True
 
@@ -76,8 +114,41 @@ def main():
 
         #将backgroung一直覆盖在游戏框
         screen.blit(background,(0,0))
-        #绘制我方飞机
-        screen.blit(me.image,me.rect)
+
+        #绘制大型飞机
+        for each in big_enemies:
+            each.move()
+            if switch_image:
+                screen.blit(each.image1,each.rect)
+            else:
+                screen.blit(each.image2,each.rect)
+
+            #播放飞机音效
+                if each.rect.bottom > -50:
+                    enemy3_fly_sound.play()
+        #绘制中型敌机
+        for each in mid_enemies:
+            each.move()
+            screen.blit(each.image,each.rect)
+        #绘制小型敌机
+        for each in small_enemies:
+            each.move()
+            screen.blit(each.image,each.rect)
+
+        
+        #绘制我方飞机,两种形态的飞机不断切换
+        if switch_image:
+            screen.blit(me.image1,me.rect)
+        else:
+            screen.blit(me.image2,me.rect)
+            
+        #切换图片
+        if not(delay % 5):
+            switch_image = not switch_image
+            
+        delay -= 1
+        if not delay:
+            delay = 100
         pygame.display.flip()
 
         clock.tick(60)
@@ -93,6 +164,10 @@ if __name__ == "__main__":
         input()
     
                 
+
+
+
+
 
 
 
