@@ -130,15 +130,17 @@ def main():
                     screen.blit(each.image2,each.rect)
             
             #播放飞机音效
-                if each.rect.bottom > -50:
-                    enemy3_fly_sound.play()
+                if each.rect.bottom == -50:
+                    enemy3_fly_sound.play(-1)
             else:
                 #毁灭
-                enemy3_down_sound.play()
                 if not(delay % 3):
+                    if e3_destroy_index == 0:
+                        enemy3_down_sound.play()
                     screen.blit(each.destroy_images[e3_destroy_index],each.rect)
                     e3_destroy_index = (e3_destroy_index + 1) % 6
                     if e3_destroy_index == 0:
+                        enemy3_down_sound.stop()
                         each.reset()
                     
         #绘制中型敌机
@@ -148,8 +150,9 @@ def main():
                 screen.blit(each.image,each.rect)
             else:
                 #毁灭
-                enemy2_down_sound.play()
                 if not(delay % 3):
+                    if e2_destroy_index == 0:
+                        enemy2_down_sound.play()
                     screen.blit(each.destroy_images[e2_destroy_index],each.rect)
                     e2_destroy_index = (e2_destroy_index + 1) % 4
                     if e2_destroy_index == 0:
@@ -161,18 +164,19 @@ def main():
                 each.move()
                 screen.blit(each.image,each.rect)
             else:
-                #毁灭
-                enemy1_down_sound.play()
+                #毁灭 
                 if not(delay % 3):
+                    if e1_destroy_index == 0:
+                        enemy1_down_sound.play()
                     screen.blit(each.destroy_images[e1_destroy_index],each.rect)
                     e1_destroy_index = (e1_destroy_index + 1) % 4
                     if e1_destroy_index == 0:
                         each.reset()
 
         #检测我方飞机是否被撞
-        enemies_down = pygame.sprite.spritecollide(me,enemies,False)
+        enemies_down = pygame.sprite.spritecollide(me,enemies,False,pygame.sprite.collide_mask)
         if enemies_down:
-            me.active = False
+            #me.active = False
             for e in enemies_down:
                 e.active = False
 
@@ -185,8 +189,9 @@ def main():
                 screen.blit(me.image2,me.rect)
         else:
             #毁灭
-            me_down_sound.play()
             if not(delay % 3):
+                if me_destroy_index == 0:
+                    me_down_sound.play()
                 screen.blit(me.destroy_images[me_destroy_index],each.rect)
                 me_destroy_index = (me_destroy_index + 1) % 4
                 if me_destroy_index == 0:
@@ -213,6 +218,7 @@ if __name__ == "__main__":
         traceback.print_exc()
         pygame.quit()
         input()
+    
     
                 
 
