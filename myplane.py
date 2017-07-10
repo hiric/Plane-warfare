@@ -5,6 +5,14 @@ class myPlane(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image1 = pygame.image.load("./images/me1.png").convert_alpha()
         self.image2 = pygame.image.load("./images/me2.png").convert_alpha()
+        #飞机爆炸
+        self.destroy_images = []
+        self.destroy_images.extend([\
+            pygame.image.load("./images/me_destroy_1.png").convert_alpha(),\
+            pygame.image.load("./images/me_destroy_2.png").convert_alpha(),\
+            pygame.image.load("./images/me_destroy_3.png").convert_alpha(),\
+            pygame.image.load("./images/me_destroy_4.png").convert_alpha()\
+            ])
         #获得飞机大小的矩形区域
         self.rect = self.image1.get_rect()
         self.width, self.height = bg_size[0],bg_size[1]
@@ -14,6 +22,7 @@ class myPlane(pygame.sprite.Sprite):
                         self.height - self.rect.height - 60
         
         self.speed = 10
+        self.active = True
         
     #设置飞机的移动，若超出边界则重新定义位置 
     def moveUp(self):
@@ -39,5 +48,4 @@ class myPlane(pygame.sprite.Sprite):
             self.rect.left += self.speed
         else:
             self.rect.right = self.width
-
             
