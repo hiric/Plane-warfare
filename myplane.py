@@ -23,6 +23,7 @@ class myPlane(pygame.sprite.Sprite):
         
         self.speed = 10
         self.active = True
+        self.invincible = False
         self.mask = pygame.mask.from_surface(self.image1)
     #设置飞机的移动，若超出边界则重新定义位置 
     def moveUp(self):
@@ -49,6 +50,13 @@ class myPlane(pygame.sprite.Sprite):
         else:
             self.rect.right = self.width
 
+    def reset(self):
+        self.rect.left, self.rect.top = \
+                        (self.width - self.rect.width) // 2,\
+                        self.height - self.rect.height - 60
+        self.active = True
+        self.invincible = True
+        
             
 
 
