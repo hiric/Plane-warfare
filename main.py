@@ -207,7 +207,7 @@ def main():
 
             elif event.type == DOUBLE_BULLET_TIME:
                 is_double_bullet = False
-                pygame.time.set_timer(DOUBLE_BULLEt_TIME,0)
+                pygame.time.set_timer(DOUBLE_BULLET_TIME,0)
                 
         #根据用户的得分增加难度
         if level == 1 and score > 50000:
@@ -427,7 +427,7 @@ def main():
             #检测我方飞机是否被撞
             enemies_down = pygame.sprite.spritecollide(me,enemies,False,pygame.sprite.collide_mask)
             if enemies_down:
-                #me.active = False
+                me.active = False
                 for e in enemies_down:
                     e.active = False
 
@@ -483,13 +483,3 @@ if __name__ == "__main__":
         traceback.print_exc()
         pygame.quit()
         input()
-
-    
-                
-
-
-
-
-
-
-
